@@ -1,40 +1,55 @@
 import os
-import json
 import pandas as pd
 
 from dotenv import load_dotenv
 from groq import Groq
 
-from pandasai import Agent
 from pandasai.config import ConfigManager
 from pandasai_litellm.litellm import LiteLLM
 
+from tools.data_analysis import create_data_agent
+from tools import create_tools
 
-# Load environment variables from .env
+from agent import create_agent, run_agent
+
+
+# ----------------------------
+# LOAD ENVIRONMENT
+# ----------------------------
+
 load_dotenv()
 
-# Get the Groq API key
 api_key = os.getenv("GROQ_API_KEY")
 
-# Create the Groq client
-client = Groq(api_key=api_key)
+
+# ----------------------------
+# CREATE GROQ CLIENT
+# ----------------------------
+
+client = Groq(
+    api_key=api_key
+)
 
 
-# Create the LLM used by PandasAI
+# ----------------------------
+# CREATE PANDASAI LLM
+# ----------------------------
+
 pandasai_llm = LiteLLM(
     model="groq/openai/gpt-oss-20b"
 )
 
-# Configure PandasAI globally
+
+# ----------------------------
+# CONFIGURE PANDASAI
+# ----------------------------
+
 ConfigManager.set(
     {
         "llm": pandasai_llm
     }
 )
 
-# ----------------------------
-# OUR DATA TOOL
-# ----------------------------
 
 # ----------------------------
 # LOAD DATASET
@@ -47,187 +62,43 @@ df = pd.read_csv("data.csv")
 # CREATE PANDASAI AGENT
 # ----------------------------
 
-data_agent = Agent(df)
+data_agent = create_data_agent(df)
 
 
 # ----------------------------
-# OUR DATA TOOL
+# CREATE TOOL REGISTRY
 # ----------------------------
 
-def analyze_data(question):
-    result = data_agent.chat(question)
-
-    return str(result)
-
-# ----------------------------
-# TOOL DEFINITION
-# ----------------------------
-
-tools = [
-    {
-        "type": "function",
-        "function": {
-            "name": "analyze_data",
-            "description": (
-                "Analyze the local data.csv dataset. "
-                "Use this tool whenever the user asks a question about "
-                "the dataset, rows, columns, values, sales, profit, "
-                "countries, or products."
-            ),
-            "parameters": {
-                "type": "object",
-                "properties": {
-                    "question": {
-                        "type": "string",
-                        "description": "The user's question about data.csv"
-                    }
-                },
-                "required": ["question"]
-            }
-        }
-    }
-]
+TOOLS = create_tools(data_agent)
 
 
 # ----------------------------
-# AGENT INSTRUCTIONS
+# CREATE AI AGENT
 # ----------------------------
 
-SYSTEM_PROMPT = """
-You are a helpful AI Data Agent.
-
-You can:
-- Answer general questions directly.
-- Help users understand data.
-- Use the analyze_data tool when the user asks
-  about the local data.csv dataset.
-
-Be helpful, clear, and concise.
-"""
+agent = create_agent(
+    client,
+    TOOLS
+)
 
 
 # ----------------------------
-# CONVERSATION MEMORY
-# ----------------------------
-
-messages = [
-    {
-        "role": "system",
-        "content": SYSTEM_PROMPT
-    }
-]
-
-
-# ----------------------------
-# AGENT LOOP
+# CLI LOOP
 # ----------------------------
 
 while True:
 
     user_input = input("\nYou: ")
 
-    # Exit condition
     if user_input.lower() in ["exit", "quit"]:
+
         print("Agent: Goodbye! 👋")
+
         break
 
-    # Add user's message to conversation history
-    messages.append(
-        {
-            "role": "user",
-            "content": user_input
-        }
+    response = run_agent(
+        agent,
+        user_input
     )
 
-    # Send conversation to the model
-    completion = client.chat.completions.create(
-        model="openai/gpt-oss-20b",
-        messages=messages,
-        tools=tools
-    )
-
-    print("\n--- First response received ---")
-
-    response_message = completion.choices[0].message
-
-    print("Content:", response_message.content)
-    print("Tool calls:", response_message.tool_calls)
-
-    # Check if the model wants to use a tool
-    if response_message.tool_calls:
-
-        print("\n--- Agent wants to use a tool ---")
-
-        # Add the assistant's tool-call message
-        messages.append(response_message)
-
-        # Go through each tool call
-        for tool_call in response_message.tool_calls:
-
-            tool_name = tool_call.function.name
-
-            print("Tool name:", tool_name )
-
-            arguments = json.loads(
-                tool_call.function.arguments
-            )
-
-            print("Arguments:", arguments)
-
-            # Run our data analysis tool
-            if tool_name == "analyze_data":
-
-                print("\n--- Running analyze_data() ---")
-
-                result = analyze_data(
-                    arguments["question"],
-                    data_agent
-                )
-
-                print("Tool result:")
-                print(result)
-
-            # Add tool result to conversation
-            messages.append(
-                {
-                    "role": "tool",
-                    "tool_call_id": tool_call.id,
-                    "content": result
-                }
-            )
-
-        print("\n--- Sending tool result back to model ---")
-
-        # Ask the model again with the tool result
-        final_completion = client.chat.completions.create(
-            model="openai/gpt-oss-20b",
-            messages=messages,
-            tools=tools
-        )
-
-        print("\n--- Final response received ---")
-
-        agent_response = (
-            final_completion
-            .choices[0]
-            .message
-            .content
-        )
-
-    else:
-
-        print("\n--- Normal response ---")
-
-        agent_response = response_message.content
-
-
-    # Print the agent's response
-    print(f"\nAgent: {agent_response}")
-
-    # Save final response to conversation history
-    messages.append(
-        {
-            "role": "assistant",
-            "content": agent_response
-        }
-    )
+    print(f"\nAgent: {response}")
