@@ -204,13 +204,35 @@ def run_agent(agent, user_input):
             )
 
             return agent_response
-
-
         # ----------------------------
         # SAVE ASSISTANT TOOL CALL
         # ----------------------------
 
-        messages.append(response_message)
+        assistant_message = {
+            "role": "assistant",
+            "content": response_message.content,
+        }
+
+        if response_message.tool_calls:
+
+            assistant_message["tool_calls"] = []
+
+            for tool_call in response_message.tool_calls:
+
+                assistant_message["tool_calls"].append(
+                    {
+                        "id": tool_call.id,
+                        "type": tool_call.type,
+                        "function": {
+                            "name": tool_call.function.name,
+                            "arguments": tool_call.function.arguments,
+                        },
+                    }
+                )
+
+        messages.append(
+            assistant_message
+        )
 
 
         # ----------------------------

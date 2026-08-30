@@ -3063,3 +3063,989 @@ FROM table_7dd83f60783fad77ab73ac8622c21f14
 all_columns_df = execute_sql_query(query)
 result = {'type': 'dataframe', 'value': all_columns_df}
 2026-08-30 15:30:34 [INFO] Response generated successfully.
+2026-08-30 15:38:23 [INFO] Question: SELECT name FROM dataset WHERE name LIKE 'A%' OR name LIKE 'B%' OR name LIKE 'D%' OR name LIKE 'F%' OR name LIKE 'G%' OR name LIKE 'J%'
+2026-08-30 15:38:23 [INFO] Running PandasAI with litellm LLM...
+2026-08-30 15:38:23 [INFO] Prompt ID: f82fe425-ac47-4649-813b-cf13fe67be3a
+2026-08-30 15:38:23 [INFO] Generating new code...
+2026-08-30 15:38:23 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_7dd83f60783fad77ab73ac8622c21f14" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "name", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "age", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "city", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "score", "type": "float", "description": null, "expression": null, "alias": null}]" dimensions="10x5">
+id,name,age,city,score
+1,Alice,28,New York,85.5
+2,Bob,34,Los Angeles,92.0
+3,Charlie,22,Chicago,78.3
+4,Diana,41,Houston,88.7
+5,Ethan,29,Phoenix,95.2
+</table>
+
+
+</tables>
+
+The following functions have already been provided. Please use them as needed and do not redefine them.
+<function>
+def execute_sql_query(sql_query: str) -> pd.DataFrame
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ SELECT name FROM dataset WHERE name LIKE 'A%' OR name LIKE 'B%' OR name LIKE 'D%' OR name LIKE 'F%' OR name LIKE 'G%' OR name LIKE 'J%'
+
+At the end, declare "result" variable as a dictionary of type and value in the following format:
+
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2026-08-30 15:38:24 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+# The function execute_sql_query is available in the environment
+
+# Execute the query on the relevant DuckDB table
+df = execute_sql_query(
+    """
+    SELECT name
+    FROM table_7dd83f60783fad77ab73ac8622c21f14
+    WHERE name LIKE 'A%'
+       OR name LIKE 'B%'
+       OR name LIKE 'D%'
+       OR name LIKE 'F%'
+       OR name LIKE 'G%'
+       OR name LIKE 'J%'
+    """
+)
+
+# Declare result var: 
+result = {
+    "type": "dataframe",
+    "value": df
+}
+2026-08-30 15:38:24 [INFO] Validating code requirements...
+2026-08-30 15:38:24 [INFO] Code validation successful.
+2026-08-30 15:38:24 [INFO] Cleaning the generated code...
+2026-08-30 15:38:24 [INFO] Executing code: import pandas as pd
+df = execute_sql_query("""
+    SELECT name
+    FROM table_7dd83f60783fad77ab73ac8622c21f14
+    WHERE name LIKE 'A%'
+       OR name LIKE 'B%'
+       OR name LIKE 'D%'
+       OR name LIKE 'F%'
+       OR name LIKE 'G%'
+       OR name LIKE 'J%'
+    """)
+result = {'type': 'dataframe', 'value': df}
+2026-08-30 15:38:25 [INFO] Response generated successfully.
+2026-08-30 15:41:50 [INFO] Question: Which model has the highest accuracy?
+2026-08-30 15:41:50 [INFO] Running PandasAI with litellm LLM...
+2026-08-30 15:41:50 [INFO] Prompt ID: 1784b36e-47f1-40ce-8cd8-ad7c99b5cf51
+2026-08-30 15:41:50 [INFO] Generating new code...
+2026-08-30 15:41:50 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_8ef1ef1feb6e62f6667dbd73bf2720ee" columns="[{"name": "Stock", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "Model", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "MAE", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "MSE", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "RMSE", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "R2", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "MAPE (%)", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "Directional Accuracy (%)", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "Best Val Loss", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "Epochs Trained", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="6x10">
+Stock,Model,MAE,MSE,RMSE,R2,MAPE (%),Directional Accuracy (%),Best Val Loss,Epochs Trained
+INFY,TCDformer (Transformer),0.187047233,0.063905789,0.252795944,0.989839757,1.167368796,67.65498652,2.45e-05,150
+INFY,TCDformer-LSTM,0.202707093,0.07318939,0.270535377,0.988363777,1.25689341,67.11590296,3.03e-05,109
+INFY,TCDformer-GRU,0.189942321,0.065564883,0.256056405,0.989575981,1.182147829,67.65498652,2.47e-05,105
+HUL,TCDformer (Transformer),25.70779954,1053.976328,32.46500158,0.94037532,1.119586524,64.86486486,7.34e-05,24
+HUL,TCDformer-LSTM,19.90011917,634.3956368,25.18721177,0.964111493,0.861887739,70.27027027,3.21e-05,71
+</table>
+
+
+</tables>
+
+The following functions have already been provided. Please use them as needed and do not redefine them.
+<function>
+def execute_sql_query(sql_query: str) -> pd.DataFrame
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ Which model has the highest accuracy?
+
+At the end, declare "result" variable as a dictionary of type and value in the following format:
+
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2026-08-30 15:41:51 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+# Use the provided function to run the SQL query and fetch the result
+sql = """
+    SELECT Stock, Model, R2
+    FROM table_8ef1ef1feb6e62f6667dbd73bf2720ee
+    ORDER BY R2 DESC
+    LIMIT 1
+"""
+df = execute_sql_query(sql)
+
+# Extract the top result
+if not df.empty:
+    top_row = df.iloc[0]
+    highest_stock = top_row['Stock']
+    highest_model = top_row['Model']
+    highest_r2 = top_row['R2']
+    result_value = f"The model with the highest R2 accuracy is {highest_stock} {highest_model} with R2 of {highest_r2:.6f}."
+else:
+    result_value = "No data available."
+
+# Declare result var:
+result = {"type": "string", "value": result_value}
+2026-08-30 15:41:51 [INFO] Validating code requirements...
+2026-08-30 15:41:51 [INFO] Code validation successful.
+2026-08-30 15:41:51 [INFO] Cleaning the generated code...
+2026-08-30 15:41:51 [INFO] Executing code: import pandas as pd
+sql = """
+    SELECT Stock, Model, R2
+    FROM table_8ef1ef1feb6e62f6667dbd73bf2720ee
+    ORDER BY R2 DESC
+    LIMIT 1
+"""
+df = execute_sql_query(sql)
+if not df.empty:
+    top_row = df.iloc[0]
+    highest_stock = top_row['Stock']
+    highest_model = top_row['Model']
+    highest_r2 = top_row['R2']
+    result_value = f'The model with the highest R2 accuracy is {highest_stock} {highest_model} with R2 of {highest_r2:.6f}.'
+else:
+    result_value = 'No data available.'
+result = {'type': 'string', 'value': result_value}
+2026-08-30 15:41:51 [INFO] Response generated successfully.
+2026-08-30 15:42:28 [INFO] Question: What are all the eval metrics used?
+2026-08-30 15:42:28 [INFO] Running PandasAI with litellm LLM...
+2026-08-30 15:42:28 [INFO] Prompt ID: eb1139d9-68df-45c2-88c5-9f4ca1d0a676
+2026-08-30 15:42:28 [INFO] Generating new code...
+2026-08-30 15:42:28 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_8ef1ef1feb6e62f6667dbd73bf2720ee" columns="[{"name": "Stock", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "Model", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "MAE", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "MSE", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "RMSE", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "R2", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "MAPE (%)", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "Directional Accuracy (%)", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "Best Val Loss", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "Epochs Trained", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="6x10">
+Stock,Model,MAE,MSE,RMSE,R2,MAPE (%),Directional Accuracy (%),Best Val Loss,Epochs Trained
+INFY,TCDformer (Transformer),0.187047233,0.063905789,0.252795944,0.989839757,1.167368796,67.65498652,2.45e-05,150
+INFY,TCDformer-LSTM,0.202707093,0.07318939,0.270535377,0.988363777,1.25689341,67.11590296,3.03e-05,109
+INFY,TCDformer-GRU,0.189942321,0.065564883,0.256056405,0.989575981,1.182147829,67.65498652,2.47e-05,105
+HUL,TCDformer (Transformer),25.70779954,1053.976328,32.46500158,0.94037532,1.119586524,64.86486486,7.34e-05,24
+HUL,TCDformer-LSTM,19.90011917,634.3956368,25.18721177,0.964111493,0.861887739,70.27027027,3.21e-05,71
+</table>
+
+
+</tables>
+
+The following functions have already been provided. Please use them as needed and do not redefine them.
+<function>
+def execute_sql_query(sql_query: str) -> pd.DataFrame
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ What are all the eval metrics used?
+
+At the end, declare "result" variable as a dictionary of type and value in the following format:
+
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2026-08-30 15:42:29 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+# Use the provided `execute_sql_query` function to fetch the column names from the DuckDB system catalog.
+# We exclude the non‑metric columns (Stock, Model, Epochs Trained) to get only the evaluation metrics.
+sql_query = """
+SELECT column_name
+FROM duckdb_information_schema.columns
+WHERE table_name = 'table_8ef1ef1feb6e62f6667dbd73bf2720ee'
+  AND column_name NOT IN ('Stock', 'Model', 'Epochs Trained')
+ORDER BY ordinal_position;
+"""
+
+# Execute the query and load the result into a DataFrame.
+metrics_df = execute_sql_query(sql_query)
+
+# Convert the metric names to a Python list.
+metrics_list = metrics_df['column_name'].tolist()
+
+# Prepare the result dictionary.
+result = {
+    "type": "string",
+    "value": f"The evaluation metrics used are: {', '.join(metrics_list)}."
+}
+2026-08-30 15:42:29 [INFO] Validating code requirements...
+2026-08-30 15:42:29 [INFO] Code validation successful.
+2026-08-30 15:42:29 [INFO] Cleaning the generated code...
+2026-08-30 15:42:29 [INFO] An error occurred during code generation: Query uses unauthorized table: columns.
+2026-08-30 15:42:29 [INFO] Stack Trace:
+Traceback (most recent call last):
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/base.py", line 39, in generate_code
+    cleaned_code = self.validate_and_clean_code(code)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/base.py", line 63, in validate_and_clean_code
+    return self._code_cleaner.clean_code(code)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/code_cleaning.py", line 164, in clean_code
+    node = self._validate_and_make_table_name_case_sensitive(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/code_cleaning.py", line 86, in _validate_and_make_table_name_case_sensitive
+    sql_query = self._clean_sql_query(node.value.value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/code_cleaning.py", line 73, in _clean_sql_query
+    return self._replace_table_names(sql_query, table_names, allowed_table_names)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/code_cleaning.py", line 57, in _replace_table_names
+    raise MaliciousQueryError(
+pandasai.exceptions.MaliciousQueryError: Query uses unauthorized table: columns.
+
+2026-08-30 15:42:29 [INFO] Execution failed with error: Traceback (most recent call last):
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/agent/base.py", line 176, in generate_code_with_retries
+    return self.generate_code(query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/agent/base.py", line 119, in generate_code
+    code = self._code_generator.generate_code(prompt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/base.py", line 52, in generate_code
+    raise e
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/base.py", line 39, in generate_code
+    cleaned_code = self.validate_and_clean_code(code)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/base.py", line 63, in validate_and_clean_code
+    return self._code_cleaner.clean_code(code)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/code_cleaning.py", line 164, in clean_code
+    node = self._validate_and_make_table_name_case_sensitive(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/code_cleaning.py", line 86, in _validate_and_make_table_name_case_sensitive
+    sql_query = self._clean_sql_query(node.value.value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/code_cleaning.py", line 73, in _clean_sql_query
+    return self._replace_table_names(sql_query, table_names, allowed_table_names)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/code_cleaning.py", line 57, in _replace_table_names
+    raise MaliciousQueryError(
+pandasai.exceptions.MaliciousQueryError: Query uses unauthorized table: columns.
+
+2026-08-30 15:42:29 [INFO] Using Prompt: <table dialect="duckdb" table_name="table_8ef1ef1feb6e62f6667dbd73bf2720ee" columns="[{"name": "Stock", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "Model", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "MAE", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "MSE", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "RMSE", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "R2", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "MAPE (%)", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "Directional Accuracy (%)", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "Best Val Loss", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "Epochs Trained", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="6x10">
+Stock,Model,MAE,MSE,RMSE,R2,MAPE (%),Directional Accuracy (%),Best Val Loss,Epochs Trained
+INFY,TCDformer (Transformer),0.187047233,0.063905789,0.252795944,0.989839757,1.167368796,67.65498652,2.45e-05,150
+INFY,TCDformer-LSTM,0.202707093,0.07318939,0.270535377,0.988363777,1.25689341,67.11590296,3.03e-05,109
+INFY,TCDformer-GRU,0.189942321,0.065564883,0.256056405,0.989575981,1.182147829,67.65498652,2.47e-05,105
+HUL,TCDformer (Transformer),25.70779954,1053.976328,32.46500158,0.94037532,1.119586524,64.86486486,7.34e-05,24
+HUL,TCDformer-LSTM,19.90011917,634.3956368,25.18721177,0.964111493,0.861887739,70.27027027,3.21e-05,71
+</table>
+
+
+The following functions have already been provided. Please use them as needed and do not redefine them.
+<function>
+def execute_sql_query(sql_query: str) -> pd.DataFrame
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+The user asked the following question:
+### QUERY
+ What are all the eval metrics used?
+
+You generated the following Python code:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+# Use the provided `execute_sql_query` function to fetch the column names from the DuckDB system catalog.
+# We exclude the non‑metric columns (Stock, Model, Epochs Trained) to get only the evaluation metrics.
+sql_query = """
+SELECT column_name
+FROM duckdb_information_schema.columns
+WHERE table_name = 'table_8ef1ef1feb6e62f6667dbd73bf2720ee'
+  AND column_name NOT IN ('Stock', 'Model', 'Epochs Trained')
+ORDER BY ordinal_position;
+"""
+
+# Execute the query and load the result into a DataFrame.
+metrics_df = execute_sql_query(sql_query)
+
+# Convert the metric names to a Python list.
+metrics_list = metrics_df['column_name'].tolist()
+
+# Prepare the result dictionary.
+result = {
+    "type": "string",
+    "value": f"The evaluation metrics used are: {', '.join(metrics_list)}."
+}
+
+However, it resulted in the following error:
+Traceback (most recent call last):
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/agent/base.py", line 176, in generate_code_with_retries
+    return self.generate_code(query)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/agent/base.py", line 119, in generate_code
+    code = self._code_generator.generate_code(prompt)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/base.py", line 52, in generate_code
+    raise e
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/base.py", line 39, in generate_code
+    cleaned_code = self.validate_and_clean_code(code)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/base.py", line 63, in validate_and_clean_code
+    return self._code_cleaner.clean_code(code)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/code_cleaning.py", line 164, in clean_code
+    node = self._validate_and_make_table_name_case_sensitive(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/code_cleaning.py", line 86, in _validate_and_make_table_name_case_sensitive
+    sql_query = self._clean_sql_query(node.value.value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/code_cleaning.py", line 73, in _clean_sql_query
+    return self._replace_table_names(sql_query, table_names, allowed_table_names)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspaces/AI-Data-Analyst/pandas-ai/pandasai/core/code_generation/code_cleaning.py", line 57, in _replace_table_names
+    raise MaliciousQueryError(
+pandasai.exceptions.MaliciousQueryError: Query uses unauthorized table: columns.
+
+
+Fix the python code above and return the new python code but the code generated should use execute_sql_query function
+2026-08-30 15:42:30 [INFO] Code Generated:
+# The evaluation metrics are the column names that are not part of the key/identifier
+# columns (Stock, Model, Epochs Trained).  We use execute_sql_query to fetch a
+# single row from the table, then read the column names from the resulting DataFrame.
+
+import pandas as pd
+
+# Get the table columns by selecting a single row
+df = execute_sql_query(
+    "SELECT * FROM table_8ef1ef1feb6e62f6667dbd73bf2720ee LIMIT 1"
+)
+
+# Exclude non‑metric columns
+metric_cols = [c for c in df.columns if c not in ("Stock", "Model", "Epochs Trained")]
+
+# Build the result
+result = {
+    "type": "string",
+    "value": f"The evaluation metrics used are: {', '.join(metric_cols)}."
+}
+2026-08-30 15:42:30 [INFO] Validating code requirements...
+2026-08-30 15:42:30 [INFO] Code validation successful.
+2026-08-30 15:42:30 [INFO] Cleaning the generated code...
+2026-08-30 15:42:30 [INFO] Executing code: import pandas as pd
+df = execute_sql_query('SELECT * FROM table_8ef1ef1feb6e62f6667dbd73bf2720ee LIMIT 1')
+metric_cols = [c for c in df.columns if c not in ('Stock', 'Model', 'Epochs Trained')]
+result = {'type': 'string', 'value': f"The evaluation metrics used are: {', '.join(metric_cols)}."}
+2026-08-30 15:42:30 [INFO] Response generated successfully.
+2026-08-30 16:02:32 [INFO] Question: How many rows are in the dataset?
+2026-08-30 16:02:32 [INFO] Running PandasAI with litellm LLM...
+2026-08-30 16:02:32 [INFO] Prompt ID: ba019038-9e1a-4909-9be5-1d87cc3d1730
+2026-08-30 16:02:32 [INFO] Generating new code...
+2026-08-30 16:02:32 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_7dd83f60783fad77ab73ac8622c21f14" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "name", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "age", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "city", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "score", "type": "float", "description": null, "expression": null, "alias": null}]" dimensions="10x5">
+id,name,age,city,score
+1,Alice,28,New York,85.5
+2,Bob,34,Los Angeles,92.0
+3,Charlie,22,Chicago,78.3
+4,Diana,41,Houston,88.7
+5,Ethan,29,Phoenix,95.2
+</table>
+
+
+</tables>
+
+The following functions have already been provided. Please use them as needed and do not redefine them.
+<function>
+def execute_sql_query(sql_query: str) -> pd.DataFrame
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ How many rows are in the dataset?
+
+At the end, declare "result" variable as a dictionary of type and value in the following format:
+
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2026-08-30 16:02:33 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Count the number of rows in the dataset using a SQL query
+sql_query = """
+    SELECT COUNT(*) AS row_count
+    FROM table_7dd83f60783fad77ab73ac8622c21f14;
+"""
+df = execute_sql_query(sql_query)
+row_count = df.iloc[0]["row_count"]
+
+# Declare result var
+result = {"type": "number", "value": row_count}
+2026-08-30 16:02:33 [INFO] Validating code requirements...
+2026-08-30 16:02:33 [INFO] Code validation successful.
+2026-08-30 16:02:33 [INFO] Cleaning the generated code...
+2026-08-30 16:02:33 [INFO] Executing code: import pandas as pd
+sql_query = """
+    SELECT COUNT(*) AS row_count
+    FROM table_7dd83f60783fad77ab73ac8622c21f14;
+"""
+df = execute_sql_query(sql_query)
+row_count = df.iloc[0]['row_count']
+result = {'type': 'number', 'value': row_count}
+2026-08-30 16:02:34 [INFO] Response generated successfully.
+2026-08-30 16:04:27 [INFO] Question: Describe the dataset
+2026-08-30 16:04:27 [INFO] Running PandasAI with litellm LLM...
+2026-08-30 16:04:27 [INFO] Prompt ID: 0011898c-7b27-4ac2-ba19-37ee24638438
+2026-08-30 16:04:27 [INFO] Generating new code...
+2026-08-30 16:04:27 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_8ef1ef1feb6e62f6667dbd73bf2720ee" columns="[{"name": "Stock", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "Model", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "MAE", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "MSE", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "RMSE", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "R2", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "MAPE (%)", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "Directional Accuracy (%)", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "Best Val Loss", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "Epochs Trained", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="6x10">
+Stock,Model,MAE,MSE,RMSE,R2,MAPE (%),Directional Accuracy (%),Best Val Loss,Epochs Trained
+INFY,TCDformer (Transformer),0.187047233,0.063905789,0.252795944,0.989839757,1.167368796,67.65498652,2.45e-05,150
+INFY,TCDformer-LSTM,0.202707093,0.07318939,0.270535377,0.988363777,1.25689341,67.11590296,3.03e-05,109
+INFY,TCDformer-GRU,0.189942321,0.065564883,0.256056405,0.989575981,1.182147829,67.65498652,2.47e-05,105
+HUL,TCDformer (Transformer),25.70779954,1053.976328,32.46500158,0.94037532,1.119586524,64.86486486,7.34e-05,24
+HUL,TCDformer-LSTM,19.90011917,634.3956368,25.18721177,0.964111493,0.861887739,70.27027027,3.21e-05,71
+</table>
+
+
+</tables>
+
+The following functions have already been provided. Please use them as needed and do not redefine them.
+<function>
+def execute_sql_query(sql_query: str) -> pd.DataFrame
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ Describe the dataset
+
+At the end, declare "result" variable as a dictionary of type and value in the following format:
+
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2026-08-30 16:04:28 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Query the database for a brief summary of the table
+summary_sql = """
+SELECT
+    COUNT(*) AS total_rows,
+    COUNT(DISTINCT Stock) AS unique_stocks,
+    COUNT(DISTINCT Model) AS unique_models,
+    AVG(MAE) AS avg_MAE,
+    MIN(MAE) AS min_MAE,
+    MAX(MAE) AS max_MAE,
+    AVG(R2) AS avg_R2,
+    MIN(R2) AS min_R2,
+    MAX(R2) AS max_R2
+FROM
+    table_8ef1ef1feb6e62f6667dbd73bf2720ee
+"""
+
+summary_df = execute_sql_query(summary_sql)
+
+# Extract the summary values
+total_rows       = int(summary_df['total_rows'].iloc[0])
+unique_stocks    = int(summary_df['unique_stocks'].iloc[0])
+unique_models    = int(summary_df['unique_models'].iloc[0])
+avg_MAE          = float(summary_df['avg_MAE'].iloc[0])
+min_MAE          = float(summary_df['min_MAE'].iloc[0])
+max_MAE          = float(summary_df['max_MAE'].iloc[0])
+avg_R2           = float(summary_df['avg_R2'].iloc[0])
+min_R2           = float(summary_df['min_R2'].iloc[0])
+max_R2           = float(summary_df['max_R2'].iloc[0])
+
+# Build a human‑readable description
+description = (
+    f"The dataset contains {total_rows} rows, covering {unique_stocks} unique stocks "
+    f"and {unique_models} unique model names. Across all rows, the mean MAE is "
+    f"{avg_MAE:.3f} (ranging from {min_MAE:.3f} to {max_MAE:.3f}), and the mean R² "
+    f"is {avg_R2:.3f} (ranging from {min_R2:.3f} to {max_R2:.3f}). "
+    f"These statistics give a quick view of the distribution and range of the "
+    f"model evaluation metrics in the table."
+)
+
+# Declare result var:
+result = {"type": "string", "value": description}
+2026-08-30 16:04:28 [INFO] Validating code requirements...
+2026-08-30 16:04:28 [INFO] Code validation successful.
+2026-08-30 16:04:28 [INFO] Cleaning the generated code...
+2026-08-30 16:04:28 [INFO] Executing code: import pandas as pd
+summary_sql = """
+SELECT
+    COUNT(*) AS total_rows,
+    COUNT(DISTINCT Stock) AS unique_stocks,
+    COUNT(DISTINCT Model) AS unique_models,
+    AVG(MAE) AS avg_MAE,
+    MIN(MAE) AS min_MAE,
+    MAX(MAE) AS max_MAE,
+    AVG(R2) AS avg_R2,
+    MIN(R2) AS min_R2,
+    MAX(R2) AS max_R2
+FROM
+    table_8ef1ef1feb6e62f6667dbd73bf2720ee
+"""
+summary_df = execute_sql_query(summary_sql)
+total_rows = int(summary_df['total_rows'].iloc[0])
+unique_stocks = int(summary_df['unique_stocks'].iloc[0])
+unique_models = int(summary_df['unique_models'].iloc[0])
+avg_MAE = float(summary_df['avg_MAE'].iloc[0])
+min_MAE = float(summary_df['min_MAE'].iloc[0])
+max_MAE = float(summary_df['max_MAE'].iloc[0])
+avg_R2 = float(summary_df['avg_R2'].iloc[0])
+min_R2 = float(summary_df['min_R2'].iloc[0])
+max_R2 = float(summary_df['max_R2'].iloc[0])
+description = f'The dataset contains {total_rows} rows, covering {unique_stocks} unique stocks and {unique_models} unique model names. Across all rows, the mean MAE is {avg_MAE:.3f} (ranging from {min_MAE:.3f} to {max_MAE:.3f}), and the mean R² is {avg_R2:.3f} (ranging from {min_R2:.3f} to {max_R2:.3f}). These statistics give a quick view of the distribution and range of the model evaluation metrics in the table.'
+result = {'type': 'string', 'value': description}
+2026-08-30 16:04:28 [INFO] Response generated successfully.
+2026-08-30 16:04:28 [INFO] Question: What columns are in the dataset?
+2026-08-30 16:04:28 [INFO] Running PandasAI with litellm LLM...
+2026-08-30 16:04:28 [INFO] Prompt ID: 684183f4-f9e0-46d9-8a2e-9457ef34d0e1
+2026-08-30 16:04:28 [INFO] Generating new code...
+2026-08-30 16:04:28 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_8ef1ef1feb6e62f6667dbd73bf2720ee" columns="[{"name": "Stock", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "Model", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "MAE", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "MSE", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "RMSE", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "R2", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "MAPE (%)", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "Directional Accuracy (%)", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "Best Val Loss", "type": "float", "description": null, "expression": null, "alias": null}, {"name": "Epochs Trained", "type": "integer", "description": null, "expression": null, "alias": null}]" dimensions="6x10">
+Stock,Model,MAE,MSE,RMSE,R2,MAPE (%),Directional Accuracy (%),Best Val Loss,Epochs Trained
+INFY,TCDformer (Transformer),0.187047233,0.063905789,0.252795944,0.989839757,1.167368796,67.65498652,2.45e-05,150
+INFY,TCDformer-LSTM,0.202707093,0.07318939,0.270535377,0.988363777,1.25689341,67.11590296,3.03e-05,109
+INFY,TCDformer-GRU,0.189942321,0.065564883,0.256056405,0.989575981,1.182147829,67.65498652,2.47e-05,105
+HUL,TCDformer (Transformer),25.70779954,1053.976328,32.46500158,0.94037532,1.119586524,64.86486486,7.34e-05,24
+HUL,TCDformer-LSTM,19.90011917,634.3956368,25.18721177,0.964111493,0.861887739,70.27027027,3.21e-05,71
+</table>
+
+
+</tables>
+
+The following functions have already been provided. Please use them as needed and do not redefine them.
+<function>
+def execute_sql_query(sql_query: str) -> pd.DataFrame
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+
+Last code generated:
+import pandas as pd
+summary_sql = """
+SELECT
+    COUNT(*) AS total_rows,
+    COUNT(DISTINCT Stock) AS unique_stocks,
+    COUNT(DISTINCT Model) AS unique_models,
+    AVG(MAE) AS avg_MAE,
+    MIN(MAE) AS min_MAE,
+    MAX(MAE) AS max_MAE,
+    AVG(R2) AS avg_R2,
+    MIN(R2) AS min_R2,
+    MAX(R2) AS max_R2
+FROM
+    table_8ef1ef1feb6e62f6667dbd73bf2720ee
+"""
+summary_df = execute_sql_query(summary_sql)
+total_rows = int(summary_df['total_rows'].iloc[0])
+unique_stocks = int(summary_df['unique_stocks'].iloc[0])
+unique_models = int(summary_df['unique_models'].iloc[0])
+avg_MAE = float(summary_df['avg_MAE'].iloc[0])
+min_MAE = float(summary_df['min_MAE'].iloc[0])
+max_MAE = float(summary_df['max_MAE'].iloc[0])
+avg_R2 = float(summary_df['avg_R2'].iloc[0])
+min_R2 = float(summary_df['min_R2'].iloc[0])
+max_R2 = float(summary_df['max_R2'].iloc[0])
+description = f'The dataset contains {total_rows} rows, covering {unique_stocks} unique stocks and {unique_models} unique model names. Across all rows, the mean MAE is {avg_MAE:.3f} (ranging from {min_MAE:.3f} to {max_MAE:.3f}), and the mean R² is {avg_R2:.3f} (ranging from {min_R2:.3f} to {max_R2:.3f}). These statistics give a quick view of the distribution and range of the model evaluation metrics in the table.'
+result = {'type': 'string', 'value': description}
+
+
+
+### QUERY
+ What columns are in the dataset?
+
+At the end, declare "result" variable as a dictionary of type and value in the following format:
+
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2026-08-30 16:04:30 [INFO] Code Generated:
+import pandas as pd
+
+# ----- Existing summary statistics query -----
+summary_sql = """
+SELECT
+    COUNT(*) AS total_rows,
+    COUNT(DISTINCT Stock) AS unique_stocks,
+    COUNT(DISTINCT Model) AS unique_models,
+    AVG(MAE) AS avg_MAE,
+    MIN(MAE) AS min_MAE,
+    MAX(MAE) AS max_MAE,
+    AVG(R2) AS avg_R2,
+    MIN(R2) AS min_R2,
+    MAX(R2) AS max_R2
+FROM
+    table_8ef1ef1feb6e62f6667dbd73bf2720ee
+"""
+summary_df = execute_sql_query(summary_sql)
+
+# Extract summary values
+total_rows     = int(summary_df['total_rows'].iloc[0])
+unique_stocks  = int(summary_df['unique_stocks'].iloc[0])
+unique_models  = int(summary_df['unique_models'].iloc[0])
+avg_MAE        = float(summary_df['avg_MAE'].iloc[0])
+min_MAE        = float(summary_df['min_MAE'].iloc[0])
+max_MAE        = float(summary_df['max_MAE'].iloc[0])
+avg_R2         = float(summary_df['avg_R2'].iloc[0])
+min_R2         = float(summary_df['min_R2'].iloc[0])
+max_R2         = float(summary_df['max_R2'].iloc[0])
+
+# ----- Query to list all columns in the table -----
+columns_sql = """
+PRAGMA table_info(table_8ef1ef1feb6e62f6667dbd73bf2720ee);
+"""
+columns_df = execute_sql_query(columns_sql)
+
+# Get column names
+column_names = columns_df['name'].tolist()
+
+# Build the answer string
+columns_desc = (
+    "The dataset contains the following columns: "
+    + ", ".join(column_names)
+)
+
+# ----- Final result variable -----
+result = {
+    "type": "string",
+    "value": columns_desc
+}
+2026-08-30 16:04:30 [INFO] Validating code requirements...
+2026-08-30 16:04:30 [INFO] Code validation successful.
+2026-08-30 16:04:30 [INFO] Cleaning the generated code...
+2026-08-30 16:04:30 [INFO] Executing code: import pandas as pd
+summary_sql = """
+SELECT
+    COUNT(*) AS total_rows,
+    COUNT(DISTINCT Stock) AS unique_stocks,
+    COUNT(DISTINCT Model) AS unique_models,
+    AVG(MAE) AS avg_MAE,
+    MIN(MAE) AS min_MAE,
+    MAX(MAE) AS max_MAE,
+    AVG(R2) AS avg_R2,
+    MIN(R2) AS min_R2,
+    MAX(R2) AS max_R2
+FROM
+    table_8ef1ef1feb6e62f6667dbd73bf2720ee
+"""
+summary_df = execute_sql_query(summary_sql)
+total_rows = int(summary_df['total_rows'].iloc[0])
+unique_stocks = int(summary_df['unique_stocks'].iloc[0])
+unique_models = int(summary_df['unique_models'].iloc[0])
+avg_MAE = float(summary_df['avg_MAE'].iloc[0])
+min_MAE = float(summary_df['min_MAE'].iloc[0])
+max_MAE = float(summary_df['max_MAE'].iloc[0])
+avg_R2 = float(summary_df['avg_R2'].iloc[0])
+min_R2 = float(summary_df['min_R2'].iloc[0])
+max_R2 = float(summary_df['max_R2'].iloc[0])
+columns_sql = """
+PRAGMA table_info(table_8ef1ef1feb6e62f6667dbd73bf2720ee);
+"""
+columns_df = execute_sql_query(columns_sql)
+column_names = columns_df['name'].tolist()
+columns_desc = 'The dataset contains the following columns: ' + ', '.join(column_names)
+result = {'type': 'string', 'value': columns_desc}
+2026-08-30 16:04:30 [INFO] Response generated successfully.
+2026-08-30 16:52:58 [INFO] Question: Describe the dataset content
+2026-08-30 16:52:58 [INFO] Running PandasAI with litellm LLM...
+2026-08-30 16:52:58 [INFO] Prompt ID: b6a24e4e-7f6b-42a3-9368-f6a9291dbfcf
+2026-08-30 16:52:58 [INFO] Generating new code...
+2026-08-30 16:52:58 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_7dd83f60783fad77ab73ac8622c21f14" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "name", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "age", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "city", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "score", "type": "float", "description": null, "expression": null, "alias": null}]" dimensions="10x5">
+id,name,age,city,score
+1,Alice,28,New York,85.5
+2,Bob,34,Los Angeles,92.0
+3,Charlie,22,Chicago,78.3
+4,Diana,41,Houston,88.7
+5,Ethan,29,Phoenix,95.2
+</table>
+
+
+</tables>
+
+The following functions have already been provided. Please use them as needed and do not redefine them.
+<function>
+def execute_sql_query(sql_query: str) -> pd.DataFrame
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ Describe the dataset content
+
+At the end, declare "result" variable as a dictionary of type and value in the following format:
+
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2026-08-30 16:53:00 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+# SQL query that aggregates the dataset information
+sql = """
+SELECT
+    COUNT(*)          AS num_rows,
+    MIN(age)          AS min_age,
+    MAX(age)          AS max_age,
+    AVG(age)          AS avg_age,
+    MIN(score)        AS min_score,
+    MAX(score)        AS max_score,
+    AVG(score)        AS avg_score,
+    GROUP_CONCAT(DISTINCT city) AS cities
+FROM table_7dd83f60783fad77ab73ac8622c21f14;
+"""
+
+# Execute the query
+df = execute_sql_query(sql)
+
+# Build a human‑readable description from the aggregated data
+row = df.iloc[0]
+description = (
+    f"The dataset contains {row['num_rows']} rows with ages ranging "
+    f"from {row['min_age']} to {row['max_age']} (average {row['avg_age']:.2f}) "
+    f"and scores ranging from {row['min_score']} to {row['max_score']} "
+    f"(average {row['avg_score']:.2f}). "
+    f"The cities represented are: {row['cities']}."
+)
+
+# Declare result var:
+result = {
+    "type": "string",
+    "value": description
+}
+2026-08-30 16:53:00 [INFO] Validating code requirements...
+2026-08-30 16:53:00 [INFO] Code validation successful.
+2026-08-30 16:53:00 [INFO] Cleaning the generated code...
+2026-08-30 16:53:00 [INFO] Executing code: import pandas as pd
+sql = """
+SELECT
+    COUNT(*)          AS num_rows,
+    MIN(age)          AS min_age,
+    MAX(age)          AS max_age,
+    AVG(age)          AS avg_age,
+    MIN(score)        AS min_score,
+    MAX(score)        AS max_score,
+    AVG(score)        AS avg_score,
+    GROUP_CONCAT(DISTINCT city) AS cities
+FROM table_7dd83f60783fad77ab73ac8622c21f14;
+"""
+df = execute_sql_query(sql)
+row = df.iloc[0]
+description = f"The dataset contains {row['num_rows']} rows with ages ranging from {row['min_age']} to {row['max_age']} (average {row['avg_age']:.2f}) and scores ranging from {row['min_score']} to {row['max_score']} (average {row['avg_score']:.2f}). The cities represented are: {row['cities']}."
+result = {'type': 'string', 'value': description}
+2026-08-30 16:53:00 [INFO] Response generated successfully.
+2026-08-30 17:45:30 [INFO] Question: How many rows are in the dataset?
+2026-08-30 17:45:30 [INFO] Running PandasAI with litellm LLM...
+2026-08-30 17:45:30 [INFO] Prompt ID: 02eac3af-e434-4542-ba4a-ae39eca9e3a6
+2026-08-30 17:45:30 [INFO] Generating new code...
+2026-08-30 17:45:30 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_7dd83f60783fad77ab73ac8622c21f14" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "name", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "age", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "city", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "score", "type": "float", "description": null, "expression": null, "alias": null}]" dimensions="10x5">
+id,name,age,city,score
+1,Alice,28,New York,85.5
+2,Bob,34,Los Angeles,92.0
+3,Charlie,22,Chicago,78.3
+4,Diana,41,Houston,88.7
+5,Ethan,29,Phoenix,95.2
+</table>
+
+
+</tables>
+
+The following functions have already been provided. Please use them as needed and do not redefine them.
+<function>
+def execute_sql_query(sql_query: str) -> pd.DataFrame
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ How many rows are in the dataset?
+
+At the end, declare "result" variable as a dictionary of type and value in the following format:
+
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2026-08-30 17:45:31 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+# Query the database to count the number of rows in the table
+sql_query = """
+SELECT COUNT(*) AS row_count
+FROM table_7dd83f60783fad77ab73ac8622c21f14
+"""
+
+# Execute the SQL query and retrieve the result as a pandas DataFrame
+df = execute_sql_query(sql_query)
+
+# Extract the count from the DataFrame
+row_count = int(df.iloc[0]['row_count'])
+
+# Declare result var: 
+result = {"type": "number", "value": row_count}
+2026-08-30 17:45:31 [INFO] Validating code requirements...
+2026-08-30 17:45:31 [INFO] Code validation successful.
+2026-08-30 17:45:31 [INFO] Cleaning the generated code...
+2026-08-30 17:45:31 [INFO] Executing code: import pandas as pd
+sql_query = """
+SELECT COUNT(*) AS row_count
+FROM table_7dd83f60783fad77ab73ac8622c21f14
+"""
+df = execute_sql_query(sql_query)
+row_count = int(df.iloc[0]['row_count'])
+result = {'type': 'number', 'value': row_count}
+2026-08-30 17:45:32 [INFO] Response generated successfully.
