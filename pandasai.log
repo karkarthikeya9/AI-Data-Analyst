@@ -2907,3 +2907,159 @@ country_rank4 = df.iloc[0]['Country'] if not df.empty else 'N/A'
 result = {'type': 'string', 'value': country_rank4}
 result
 2026-08-30 12:52:07 [INFO] Response generated successfully.
+2026-08-30 15:30:30 [INFO] Question: List distinct values in the 'country' column
+2026-08-30 15:30:30 [INFO] Running PandasAI with litellm LLM...
+2026-08-30 15:30:30 [INFO] Prompt ID: 90cbd4f3-5d28-43e2-a6b0-26f9abef773b
+2026-08-30 15:30:30 [INFO] Generating new code...
+2026-08-30 15:30:30 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_7dd83f60783fad77ab73ac8622c21f14" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "name", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "age", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "city", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "score", "type": "float", "description": null, "expression": null, "alias": null}]" dimensions="10x5">
+id,name,age,city,score
+1,Alice,28,New York,85.5
+2,Bob,34,Los Angeles,92.0
+3,Charlie,22,Chicago,78.3
+4,Diana,41,Houston,88.7
+5,Ethan,29,Phoenix,95.2
+</table>
+
+
+</tables>
+
+The following functions have already been provided. Please use them as needed and do not redefine them.
+<function>
+def execute_sql_query(sql_query: str) -> pd.DataFrame
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ List distinct values in the 'country' column
+
+At the end, declare "result" variable as a dictionary of type and value in the following format:
+
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2026-08-30 15:30:31 [INFO] Code Generated:
+# Import the required dependencies
+import pandas as pd
+
+# Execute the SQL query to fetch distinct values from the 'city' column
+query = """
+SELECT DISTINCT city
+FROM table_7dd83f60783fad77ab73ac8622c21f14
+ORDER BY city;
+"""
+distinct_cities_df = execute_sql_query(query)
+
+# Declare the result variable
+result = {
+    "type": "dataframe",
+    "value": distinct_cities_df
+}
+2026-08-30 15:30:31 [INFO] Validating code requirements...
+2026-08-30 15:30:31 [INFO] Code validation successful.
+2026-08-30 15:30:31 [INFO] Cleaning the generated code...
+2026-08-30 15:30:31 [INFO] Executing code: import pandas as pd
+query = """
+SELECT DISTINCT city
+FROM table_7dd83f60783fad77ab73ac8622c21f14
+ORDER BY city;
+"""
+distinct_cities_df = execute_sql_query(query)
+result = {'type': 'dataframe', 'value': distinct_cities_df}
+2026-08-30 15:30:32 [INFO] Response generated successfully.
+2026-08-30 15:30:33 [INFO] Question: Show all columns in the dataset
+2026-08-30 15:30:33 [INFO] Running PandasAI with litellm LLM...
+2026-08-30 15:30:33 [INFO] Prompt ID: 2357f56b-7d46-4053-a907-167dfe86263c
+2026-08-30 15:30:33 [INFO] Generating new code...
+2026-08-30 15:30:33 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_7dd83f60783fad77ab73ac8622c21f14" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "name", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "age", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "city", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "score", "type": "float", "description": null, "expression": null, "alias": null}]" dimensions="10x5">
+id,name,age,city,score
+1,Alice,28,New York,85.5
+2,Bob,34,Los Angeles,92.0
+3,Charlie,22,Chicago,78.3
+4,Diana,41,Houston,88.7
+5,Ethan,29,Phoenix,95.2
+</table>
+
+
+</tables>
+
+The following functions have already been provided. Please use them as needed and do not redefine them.
+<function>
+def execute_sql_query(sql_query: str) -> pd.DataFrame
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+
+Last code generated:
+import pandas as pd
+query = """
+SELECT DISTINCT city
+FROM table_7dd83f60783fad77ab73ac8622c21f14
+ORDER BY city;
+"""
+distinct_cities_df = execute_sql_query(query)
+result = {'type': 'dataframe', 'value': distinct_cities_df}
+
+
+
+### QUERY
+ Show all columns in the dataset
+
+At the end, declare "result" variable as a dictionary of type and value in the following format:
+
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2026-08-30 15:30:34 [INFO] Code Generated:
+import pandas as pd
+
+# Query to retrieve all columns from the dataset
+query = """
+SELECT *
+FROM table_7dd83f60783fad77ab73ac8622c21f14
+"""
+
+# Execute the SQL query and obtain a pandas DataFrame
+all_columns_df = execute_sql_query(query)
+
+# Prepare the result in the required format
+result = {'type': 'dataframe', 'value': all_columns_df}
+2026-08-30 15:30:34 [INFO] Validating code requirements...
+2026-08-30 15:30:34 [INFO] Code validation successful.
+2026-08-30 15:30:34 [INFO] Cleaning the generated code...
+2026-08-30 15:30:34 [INFO] Executing code: import pandas as pd
+query = """
+SELECT *
+FROM table_7dd83f60783fad77ab73ac8622c21f14
+"""
+all_columns_df = execute_sql_query(query)
+result = {'type': 'dataframe', 'value': all_columns_df}
+2026-08-30 15:30:34 [INFO] Response generated successfully.
