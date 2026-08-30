@@ -5,6 +5,10 @@ import pandas as pd
 from dotenv import load_dotenv
 from groq import Groq
 
+from pandasai import Agent
+from pandasai.config import ConfigManager
+from pandasai_litellm.litellm import LiteLLM
+
 
 # Load environment variables from .env
 load_dotenv()
@@ -16,24 +20,44 @@ api_key = os.getenv("GROQ_API_KEY")
 client = Groq(api_key=api_key)
 
 
+# Create the LLM used by PandasAI
+pandasai_llm = LiteLLM(
+    model="groq/openai/gpt-oss-20b"
+)
+
+# Configure PandasAI globally
+ConfigManager.set(
+    {
+        "llm": pandasai_llm
+    }
+)
+
+# ----------------------------
+# OUR DATA TOOL
+# ----------------------------
+
+# ----------------------------
+# LOAD DATASET
+# ----------------------------
+
+df = pd.read_csv("data.csv")
+
+
+# ----------------------------
+# CREATE PANDASAI AGENT
+# ----------------------------
+
+data_agent = Agent(df)
+
+
 # ----------------------------
 # OUR DATA TOOL
 # ----------------------------
 
 def analyze_data(question):
-    df = pd.read_csv("data.csv")
+    result = data_agent.chat(question)
 
-    return f"""
-Dataset information:
-
-Columns: {list(df.columns)}
-
-Number of rows: {len(df)}
-
-First 5 rows:
-{df.head().to_string()}
-"""
-
+    return str(result)
 
 # ----------------------------
 # TOOL DEFINITION
@@ -142,7 +166,7 @@ while True:
 
             tool_name = tool_call.function.name
 
-            print("Tool name:", tool_name)
+            print("Tool name:", tool_name )
 
             arguments = json.loads(
                 tool_call.function.arguments
