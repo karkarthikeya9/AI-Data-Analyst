@@ -4049,3 +4049,171 @@ df = execute_sql_query(sql_query)
 row_count = int(df.iloc[0]['row_count'])
 result = {'type': 'number', 'value': row_count}
 2026-08-30 17:45:32 [INFO] Response generated successfully.
+2026-08-30 19:30:14 [INFO] Question: Provide a summary of the dataset, including number of rows, columns, key fields, data types, and any missing values or anomalies.
+2026-08-30 19:30:14 [INFO] Running PandasAI with litellm LLM...
+2026-08-30 19:30:14 [INFO] Prompt ID: 864d9198-b36b-4e8f-b84a-ffd689d43013
+2026-08-30 19:30:14 [INFO] Generating new code...
+2026-08-30 19:30:14 [INFO] Using Prompt: <tables>
+
+<table dialect="duckdb" table_name="table_7dd83f60783fad77ab73ac8622c21f14" columns="[{"name": "id", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "name", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "age", "type": "integer", "description": null, "expression": null, "alias": null}, {"name": "city", "type": "string", "description": null, "expression": null, "alias": null}, {"name": "score", "type": "float", "description": null, "expression": null, "alias": null}]" dimensions="10x5">
+id,name,age,city,score
+1,Alice,28,New York,85.5
+2,Bob,34,Los Angeles,92.0
+3,Charlie,22,Chicago,78.3
+4,Diana,41,Houston,88.7
+5,Ethan,29,Phoenix,95.2
+</table>
+
+
+</tables>
+
+The following functions have already been provided. Please use them as needed and do not redefine them.
+<function>
+def execute_sql_query(sql_query: str) -> pd.DataFrame
+    """This method connects to the database, executes the sql query and returns the dataframe"""
+</function>
+
+
+
+Update this initial code:
+```python
+# TODO: import the required dependencies
+import pandas as pd
+
+# Write code here
+
+# Declare result var: 
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+```
+
+
+
+### QUERY
+ Provide a summary of the dataset, including number of rows, columns, key fields, data types, and any missing values or anomalies.
+
+At the end, declare "result" variable as a dictionary of type and value in the following format:
+
+type (possible values "string", "number", "dataframe", "plot"). Examples: { "type": "string", "value": f"The highest salary is {highest_salary}." } or { "type": "number", "value": 125 } or { "type": "dataframe", "value": pd.DataFrame({...}) } or { "type": "plot", "value": "temp_chart.png" }
+
+
+
+Generate python code and return full updated code:
+
+### Note: Use only relevant table for query and do aggregation, sorting, joins and grouby through sql query
+2026-08-30 19:30:15 [INFO] Code Generated:
+# TODO: import the required dependencies
+import pandas as pd
+import json
+
+# Table name
+TABLE_NAME = "table_7dd83f60783fad77ab73ac8622c21f14"
+
+# ---- Gather basic metadata ----
+# Number of rows
+rows_df = execute_sql_query(f"SELECT COUNT(*) AS rows FROM {TABLE_NAME};")
+rows_count = rows_df["rows"][0]
+
+# Column names and data types
+info_df = execute_sql_query(f"SELECT name, type FROM pragma_table_info('{TABLE_NAME}') ORDER BY cid;")
+column_names = info_df["name"].tolist()
+column_types = dict(zip(info_df["name"], info_df["type"]))
+cols_count = len(column_names)
+
+# Key fields (simple heuristic: 'id' is a unique key if its distinct count equals total rows)
+key_fields = []
+id_distinct_df = execute_sql_query(f"SELECT COUNT(DISTINCT id) AS distinct_id FROM {TABLE_NAME};")
+if id_distinct_df["distinct_id"][0] == rows_count:
+    key_fields.append("id")
+
+# ---- Check for missing values ----
+missing_counts = {}
+for col in column_names:
+    miss_df = execute_sql_query(f"SELECT COUNT(*) AS miss FROM {TABLE_NAME} WHERE {col} IS NULL;")
+    miss_count = miss_df["miss"][0]
+    if miss_count > 0:
+        missing_counts[col] = miss_count
+
+# ---- Detect simple anomalies ----
+# Example anomalies: age out of realistic bounds or negative score
+anomaly_df = execute_sql_query(f"""
+    SELECT COUNT(*) AS anomalies
+    FROM {TABLE_NAME}
+    WHERE (age < 0 OR age > 120) OR (score < 0);
+""")
+anomaly_count = anomaly_df["anomalies"][0]
+
+# ---- Build summary string ----
+summary_parts = [
+    f"Number of rows: {rows_count}",
+    f"Number of columns: {cols_count}",
+    f"Columns (name : type): {', '.join([f'{name} : {column_types[name]}' for name in column_names])}",
+]
+if key_fields:
+    summary_parts.append(f"Potential key field(s): {', '.join(key_fields)}")
+else:
+    summary_parts.append("No unique key field detected.")
+
+if missing_counts:
+    summary_parts.append(
+        f"Missing values per column: {', '.join([f'{col} ({cnt})' for col, cnt in missing_counts.items()])}"
+    )
+else:
+    summary_parts.append("No missing values detected.")
+
+if anomaly_count:
+    summary_parts.append(f"Anomalies detected: {anomaly_count} row(s)")
+else:
+    summary_parts.append("No anomalies detected.")
+
+summary = "\n".join(summary_parts)
+
+# Declare result variable
+result = {
+    "type": "string",
+    "value": summary
+}
+2026-08-30 19:30:15 [INFO] Validating code requirements...
+2026-08-30 19:30:15 [INFO] Code validation successful.
+2026-08-30 19:30:15 [INFO] Cleaning the generated code...
+2026-08-30 19:30:15 [INFO] Executing code: import pandas as pd
+import json
+TABLE_NAME = 'table_7dd83f60783fad77ab73ac8622c21f14'
+rows_df = execute_sql_query(f'SELECT COUNT(*) AS rows FROM {TABLE_NAME};')
+rows_count = rows_df['rows'][0]
+info_df = execute_sql_query(f"SELECT name, type FROM pragma_table_info('{TABLE_NAME}') ORDER BY cid;")
+column_names = info_df['name'].tolist()
+column_types = dict(zip(info_df['name'], info_df['type']))
+cols_count = len(column_names)
+key_fields = []
+id_distinct_df = execute_sql_query(f'SELECT COUNT(DISTINCT id) AS distinct_id FROM {TABLE_NAME};')
+if id_distinct_df['distinct_id'][0] == rows_count:
+    key_fields.append('id')
+missing_counts = {}
+for col in column_names:
+    miss_df = execute_sql_query(f'SELECT COUNT(*) AS miss FROM {TABLE_NAME} WHERE {col} IS NULL;')
+    miss_count = miss_df['miss'][0]
+    if miss_count > 0:
+        missing_counts[col] = miss_count
+anomaly_df = execute_sql_query(f"""
+    SELECT COUNT(*) AS anomalies
+    FROM {TABLE_NAME}
+    WHERE (age < 0 OR age > 120) OR (score < 0);
+""")
+anomaly_count = anomaly_df['anomalies'][0]
+summary_parts = [f'Number of rows: {rows_count}', f'Number of columns: {cols_count}', f"Columns (name : type): {', '.join([f'{name} : {column_types[name]}' for name in column_names])}"]
+if key_fields:
+    summary_parts.append(f"Potential key field(s): {', '.join(key_fields)}")
+else:
+    summary_parts.append('No unique key field detected.')
+if missing_counts:
+    summary_parts.append(f"Missing values per column: {', '.join([f'{col} ({cnt})' for col, cnt in missing_counts.items()])}")
+else:
+    summary_parts.append('No missing values detected.')
+if anomaly_count:
+    summary_parts.append(f'Anomalies detected: {anomaly_count} row(s)')
+else:
+    summary_parts.append('No anomalies detected.')
+summary = '\n'.join(summary_parts)
+result = {'type': 'string', 'value': summary}
+2026-08-30 19:30:16 [INFO] Response generated successfully.

@@ -192,9 +192,21 @@ def get_chat(
 # DELETE CHAT
 # ============================================================
 
-def delete_chat(
-    chat_id
-):
+def delete_chat(chat_id):
+
+    chat = get_chat(
+        chat_id
+    )
+
+    if chat is None:
+
+        return
+
+
+    dataset_path = chat[
+        "dataset_path"
+    ]
+
 
     connection = get_connection()
 
@@ -203,13 +215,35 @@ def delete_chat(
         DELETE FROM chats
         WHERE id = ?
         """,
-        (chat_id,)
+        (
+            chat_id,
+        )
     )
+
 
     connection.commit()
 
     connection.close()
 
+
+    # -----------------------------------------------
+    # Delete physical dataset
+    # -----------------------------------------------
+
+    if (
+        dataset_path
+        and os.path.exists(dataset_path)
+    ):
+
+        try:
+
+            os.remove(
+                dataset_path
+            )
+
+        except OSError:
+
+            pass
 
 # ============================================================
 # UPDATE CHAT
@@ -376,20 +410,52 @@ def save_dataset(
     uploaded_file
 ):
 
+    # -----------------------------------------------
+    # Get existing dataset
+    # -----------------------------------------------
+
+    chat = get_chat(
+        chat_id
+    )
+
+
+    old_path = None
+
+    if chat:
+
+        old_path = chat[
+            "dataset_path"
+        ]
+
+
+    # -----------------------------------------------
+    # File extension
+    # -----------------------------------------------
+
     extension = os.path.splitext(
         uploaded_file.name
-    )[1]
+    )[1].lower()
+
+
+    # -----------------------------------------------
+    # Chat-specific filename
+    # -----------------------------------------------
 
     filename = (
         f"{chat_id}"
         f"{extension}"
     )
 
+
     path = os.path.join(
         UPLOADS_DIR,
         filename
     )
 
+
+    # -----------------------------------------------
+    # Save new dataset
+    # -----------------------------------------------
 
     with open(
         path,
@@ -400,6 +466,31 @@ def save_dataset(
             uploaded_file.getbuffer()
         )
 
+
+    # -----------------------------------------------
+    # Delete previous dataset
+    # -----------------------------------------------
+
+    if (
+        old_path
+        and old_path != path
+        and os.path.exists(old_path)
+    ):
+
+        try:
+
+            os.remove(
+                old_path
+            )
+
+        except OSError:
+
+            pass
+
+
+    # -----------------------------------------------
+    # Update database
+    # -----------------------------------------------
 
     update_chat(
         chat_id,
