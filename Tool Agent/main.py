@@ -180,7 +180,8 @@ while True:
                 print("\n--- Running analyze_data() ---")
 
                 result = analyze_data(
-                    arguments["question"]
+                    arguments["question"],
+                    data_agent
                 )
 
                 print("Tool result:")
