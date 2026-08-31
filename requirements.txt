@@ -1,0 +1,10 @@
+streamlit
+pandas
+groq
+python-dotenv
+openpyxl
+xlrd
+litellm
+
+-e ./pandas-ai
+-e ./pandas-ai/extensions/llms/litellm
